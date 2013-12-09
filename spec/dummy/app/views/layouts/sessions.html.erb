@@ -1,0 +1,4 @@
+<!DOCTYPE html>
+<html>
+<%= render inline: ERB.new(Authentify::AuthentifyUtility.find_config_const('app_session_view')).result(binding) %>
+</html>

@@ -1,0 +1,6 @@
+<% lf = eval(@search_stat.labels_and_fields) %>
+<p>
+<% lf.each do |field, layouts| %>
+   <%= f.input field.to_sym, layouts %>
+<% end %>
+</p>
