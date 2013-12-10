@@ -1,0 +1,23 @@
+# Sample localization file for English. Add more files in this directory for other locales.
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+  
+zh-CN:
+  
+  #commonx
+  Data Error. Not Saved!  : '数据错误。无法保存！'
+  'Brief Note:' : '简注：'
+  Stats                 : '统计'
+  Stats Summary         : '统计小结'
+  Week : '周'
+  Month : '月'
+  Quart : '季'
+  Year : '年'
+  week : '周'
+  month : '月'
+  quart : '季'
+  year : '年'
+  Time Frame : '时段'
+  'Search Parameters:' : '搜索参数'
+  Search : '搜索'
+  Search Summary : '搜索小结'
+  Back : '返回'
