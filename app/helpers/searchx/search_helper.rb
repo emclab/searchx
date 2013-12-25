@@ -3,6 +3,7 @@ module Searchx
     def search
       @title = params[:controller].camelize.demodulize.tableize.singularize.capitalize + ' Search'  
       @model, @search_stat = search_(params)
+      @lf = instance_eval(@search_stat.labels_and_fields)
       @results_url = 'search_results_' + params[:controller].camelize.demodulize.tableize.downcase + '_path'
       @erb_code = find_config_const('search_params_view')
     end
@@ -35,7 +36,6 @@ module Searchx
     def search_(params)
       model = params[:controller].singularize.camelize
       model = model.constantize.new() rescue nil
-      #search_stat = SEARCH_STAT_INFO[params[:controller].sub('/','_')]
       search_stat = find_search_stat_info(params[:controller].sub('/','_'))
       return model, search_stat
     end
@@ -106,7 +106,7 @@ module Searchx
       search_stat_result = params[symbModel][:time_frame_s].present? ? eval(search_stat.stat_function)[time_frame.to_sym] : []
       search_stat_result = [] if search_stat_result.nil?
       stat_summary_result = search_stat.stat_summary_function
-      search_summary_result = nil # search_stat.search_summary_function
+      search_summary_result = search_stat.search_summary_function
       col_headers = search_stat.stat_header.split(',').map(&:strip)  #remove space when split
       models = models.page(params[:page]).per_page(max_pagination)
       return SearchStatsDetails.new(search_params, col_headers, models, search_stat_result, stat_summary_result, search_stat.time_frame, search_stat.search_list_form, search_summary_result)

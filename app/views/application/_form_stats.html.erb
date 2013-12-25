@@ -1,6 +1,6 @@
 <% if @s_s_results_details.stat_summary_result.present? %>
 	<h5><%= t(@s_s_results_details.stat_summary_title) %></h2>	
-	<p><%= render inline: ERB.new(@s_s_results_details.stat_summary_result).result(binding) %></p>
+	<p><%= render inline: ERB.new(@s_s_results_details.stat_summary_result).result(binding)  %></p>
 <% end %>	
 
 <h5><%= t(@s_s_results_details.stat_title) %></h2>	

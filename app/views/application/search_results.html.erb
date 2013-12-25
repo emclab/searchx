@@ -2,8 +2,8 @@
 <div id="main_body">
   <h4><%= t(@title) %></h4>
 
-  <p>&nbsp;&nbsp;<b><%= t('Search Parameters:') %></b>&nbsp;&nbsp;<%= render inline: @s_s_results_details.search_params %><p>
-  
+  <p>&nbsp;&nbsp;<b><%= t('Search Parameters:') %></b>&nbsp;&nbsp;<%= render inline: @s_s_results_details.search_params %></p>
+  <p><%= render inline: ERB.new(@s_s_results_details.search_summary_result).result(binding) if @s_s_results_details.search_summary_result.present? %></p>
    <%= render partial: @s_s_results_details.search_list_form, locals: {models: @s_s_results_details.models } %> 
 
   <%#= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :class => BUTTONS_CLS['action'] %>
