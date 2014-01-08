@@ -17,6 +17,7 @@ module Searchx
     def stats
       @title = params[:controller].camelize.demodulize.tableize.singularize.capitalize + ' Stats' 
       @model, @search_stat = search_(params)
+      @lf = instance_eval(@search_stat.labels_and_fields)
       @results_url = 'stats_results_' + params[:controller].camelize.demodulize.tableize.downcase + '_path'
       @erb_code = find_config_const('stats_params_view')
     end
