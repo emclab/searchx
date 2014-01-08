@@ -13,8 +13,8 @@
 
   <% @s_s_results_details.search_stat_result.each do |m| %>
       <tr>
-        <% @s_s_results_details.col_headers.each do |h| %>
-            <td><%= m[h] %></td>
+        <% m.attributes.each do |k, v| %>
+            <td><%= m[k] %></td>
         <% end %>
       </tr>
   <% end %>
