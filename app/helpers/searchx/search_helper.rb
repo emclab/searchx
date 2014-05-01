@@ -1,7 +1,7 @@
 module Searchx
   module SearchHelper
     def search
-      @title = params[:controller].camelize.demodulize.tableize.singularize.capitalize + ' Search'  
+      @title = params[:controller].camelize.demodulize.tableize.singularize.titleize + ' Search'  
       @model, @search_stat = search_(params)
       @lf = instance_eval(@search_stat.labels_and_fields)
       @results_url = 'search_results_' + params[:controller].camelize.demodulize.tableize.downcase + '_path'
@@ -9,13 +9,13 @@ module Searchx
     end
 
     def search_results
-      @title = params[:controller].camelize.demodulize.tableize.singularize.capitalize + ' Search'
+      @title = params[:controller].camelize.demodulize.tableize.singularize.titleize + ' Search'
       @s_s_results_details =  search_results_(params, @max_pagination)
       @erb_code = find_config_const(params[:controller].camelize.demodulize.tableize.singularize.downcase + '_index_view', params[:controller].camelize.deconstantize.tableize.singularize.downcase)
     end
     
     def stats
-      @title = params[:controller].camelize.demodulize.tableize.singularize.capitalize + ' Stats' 
+      @title = params[:controller].camelize.demodulize.tableize.singularize.titleize + ' Stats' 
       @model, @search_stat = search_(params)
       @lf = instance_eval(@search_stat.labels_and_fields)
       @results_url = 'stats_results_' + params[:controller].camelize.demodulize.tableize.downcase + '_path'
@@ -23,7 +23,7 @@ module Searchx
     end
 
     def stats_results
-      @title = params[:controller].camelize.demodulize.tableize.singularize.capitalize + ' Stats' 
+      @title = params[:controller].camelize.demodulize.tableize.singularize.titleize + ' Stats' 
       @s_s_results_details =  search_results_(params, @max_pagination)
       @time_frame = eval(@s_s_results_details.time_frame)
       @erb_code = find_config_const(params[:controller].camelize.demodulize.tableize.singularize.downcase + '_index_view', params[:controller].camelize.deconstantize.tableize.singularize.downcase)
