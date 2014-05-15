@@ -118,6 +118,9 @@ module Searchx
       search_where_hash = eval(search_stat.search_where)
       search_params_hash = search_stat.search_params.present? ? eval(search_stat.search_params) : {} #for id field which needs to retrieve its value.
       search_params = params[symbModel][:time_frame_s].present? ? "<%=t('Time Frame') %>" + "=" + I18n.t(params[symbModel][:time_frame_s]) + ',' : ''
+      #SQL
+      access_rights, models, has_record_access = Authentify::UserPrivilegeHelper.access_right_finder(params[:action], params[:controller], nil,nil,nil,nil, session[:user_privilege])
+      models = eval(search_stat.search_results_period_limit).call()  #apply search_results_period_limit set in db table
       search_where_hash.each do |key, val|
         if params[symbModel][key].present?
           #the val is a proc that is in the config and has already the "models" variable. 
@@ -127,7 +130,6 @@ module Searchx
           search_params +=  "<%=t('" + key.to_s.humanize.titleize[0..-3] + "')%>" + "=" + (search_params_hash[key].present? ? search_params_hash[key].call() : params[symbModel][key])  + ', '
         end
       end
-      models = eval(search_stat.search_results_period_limit).call()
       return models, search_params
     end
 
