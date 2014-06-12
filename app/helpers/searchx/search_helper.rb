@@ -108,7 +108,7 @@ module Searchx
       search_stat_result = [] if search_stat_result.nil?
       stat_summary_result = search_stat.stat_summary_function
       search_summary_result = search_stat.search_summary_function
-      col_headers = search_stat.stat_header.split(',').map(&:strip)  #remove space when split
+      col_headers = search_stat.stat_header.split(',').map(&:strip) if search_stat.stat_header #remove space when split
       models = models.page(params[:page]).per_page(max_pagination)
       return SearchStatsDetails.new(search_params, col_headers, models, search_stat_result, stat_summary_result, search_stat.time_frame, search_stat.search_list_form, search_summary_result)
     end
