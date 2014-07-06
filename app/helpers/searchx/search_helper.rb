@@ -1,32 +1,32 @@
 module Searchx
   module SearchHelper
     def search
-      @title = params[:controller].camelize.demodulize.tableize.singularize.titleize + ' Search'  
+      @title = params[:controller].sub(/.+\//,'').singularize.titleize + ' Search'  
       @model, @search_stat = search_(params)
       @lf = instance_eval(@search_stat.labels_and_fields)
-      @results_url = 'search_results_' + params[:controller].camelize.demodulize.tableize.downcase + '_path'
+      @results_url = 'search_results_' + params[:controller].sub(/.+\//,'') + '_path'
       @erb_code = find_config_const('search_params_view')
     end
 
     def search_results
       @title = params[:controller].camelize.demodulize.tableize.singularize.titleize + ' Search'
       @s_s_results_details =  search_results_(params, @max_pagination)
-      @erb_code = find_config_const(params[:controller].camelize.demodulize.tableize.singularize.downcase + '_index_view', params[:controller].camelize.deconstantize.tableize.singularize.downcase)
+      @erb_code = find_config_const(params[:controller].sub(/.+\//,'').singularize + '_index_view', params[:controller].sub(/\/.+/,''))
     end
     
     def stats
-      @title = params[:controller].camelize.demodulize.tableize.singularize.titleize + ' Stats' 
+      @title = params[:controller].sub(/.+\//,'').singularize.titleize + ' Stats' 
       @model, @search_stat = search_(params)
       @lf = instance_eval(@search_stat.labels_and_fields)
-      @results_url = 'stats_results_' + params[:controller].camelize.demodulize.tableize.downcase + '_path'
+      @results_url = 'stats_results_' + params[:controller].sub(/.+\//,'') + '_path'
       @erb_code = find_config_const('stats_params_view')
     end
 
     def stats_results
-      @title = params[:controller].camelize.demodulize.tableize.singularize.titleize + ' Stats' 
+      @title = params[:controller].sub(/.+\//,'').singularize.titleize + ' Stats' 
       @s_s_results_details =  search_results_(params, @max_pagination)
       @time_frame = eval(@s_s_results_details.time_frame)
-      @erb_code = find_config_const(params[:controller].camelize.demodulize.tableize.singularize.downcase + '_index_view', params[:controller].camelize.deconstantize.tableize.singularize.downcase)
+      @erb_code = find_config_const(params[:controller].sub(/.+\//,'').singularize + '_index_view', params[:controller].sub(/\/.+/,''))
     end
     
     #==
