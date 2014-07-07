@@ -1,6 +1,6 @@
 <div id="main_body">
   <h4><%= t(@title) %></h4>
-  <%= simple_form_for @model, :method => :get, :url =>  eval(@results_url)  do |f| %>
+  <%= simple_form_for @model, :method => :get, :url => eval(@results_url)  do |f| %>
       <%= render inline: ERB.new(@erb_code).result(binding) %>
   <% end %>
 
