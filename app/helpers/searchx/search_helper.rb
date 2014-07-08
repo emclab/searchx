@@ -12,7 +12,7 @@ module Searchx
       @title = params[:controller].camelize.demodulize.tableize.singularize.titleize + ' Search'
       @s_s_results_details =  search_results_(params, @max_pagination)
       @erb_code = find_config_const(params[:controller].sub(/.+\//,'').singularize + '_index_view', params[:controller].sub(/\/.+/,''))
-      remember_link(request.GET) #for Back to land on search_results page.
+      remember_link() #for Back to land on search_results page.
     end
     
     def stats
@@ -42,31 +42,27 @@ module Searchx
       return model, search_stat
     end
     
-    def remember_link(req_get)
+    def remember_link()
       previous_url = session[('page' + session[:page_step].to_s).to_sym]
-      next_url = form_full_url(req_get)
+      next_url = form_full_url()
       if next_url != previous_url  #skip if the url is the same.
         session[:page_step] += 1 
         session[('page' + session[:page_step].to_s).to_sym] = next_url 
       end
     end
     
-    def form_full_url(req_get)
+    def form_full_url()
       url_path = eval(params[:action] + '_' + params[:controller].sub(/.+\//, '') + '_path')
       model = params[:controller].sub(/.+\//, '').singularize
-      req_get.each do |r|
-        if r[0].to_s.include?(model)
-          sub_hash = ''
-          r[1].map do |k, v|
-            if sub_hash.present?
-              sub_hash += '&' + r[0].to_s + '[' + k.to_s  + ']=' + v.to_s
-            else
-              sub_hash = r[0].to_s + '[' + k.to_s  + ']=' + v.to_s
-            end
-          end
-          return url_path +'?' + sub_hash
+      sub_hash = ''
+      params[model].map do |k, v|
+        if sub_hash.present?
+          sub_hash += '&' + model + '[' + k.to_s  + ']=' + v.to_s
+        else
+          sub_hash = model + '[' + k.to_s  + ']=' + v.to_s
         end
       end
+      return url_path +'?' + sub_hash
     end
    
     class SearchStatsDetails
