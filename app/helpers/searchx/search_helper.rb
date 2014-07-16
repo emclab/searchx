@@ -46,7 +46,8 @@ module Searchx
       previous_url = session[('page' + session[:page_step].to_s).to_sym]
       next_url = form_full_url()
       if next_url != previous_url  #skip if the url is the same.
-        session[:page_step] += 1 
+        session[:page_step] += 1 if session[:page_step].present?
+        session[:page_step] = 1 if session[:page_step].blank?
         session[('page' + session[:page_step].to_s).to_sym] = next_url 
       end
     end
