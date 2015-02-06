@@ -6,11 +6,11 @@ source "https://rubygems.org"
 gemspec
 
 # jquery-rails is used by the dummy application
-gem "jquery-rails", "~> 2.3.0"
+gem "jquery-rails" #, "~> 2.3.0"
 gem "will_paginate"
 
-gem 'authentify', :path => '../authentify'  #for rspec test
-gem 'commonx', :path => '../commonx'
+gem 'authentify', :path => '../authentify', branch: '4.2.0'  #for rspec test
+gem 'commonx', :path => '../commonx', branch: '4.2.0'
 
 # Declare any dependencies that are still in development here instead of in
 # your gemspec. These might include edge Rails or gems from your path or
