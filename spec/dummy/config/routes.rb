@@ -6,9 +6,9 @@ Rails.application.routes.draw do
   
   #resource :session
   
-  root :to => "sessions#new", controller: :authentify
-  get '/signin',  :to => 'sessions#new', controller: :authentify
-  get '/signout', :to => 'sessions#destroy', controller: :authentify
-  get '/user_menus', :to => 'user_menus#index', controller: :main_app
-  get '/view_handler', :to => 'application#view_handler', controller: :authentify
+  root :to => "authentify/sessions#new"
+  get '/signin',  :to => 'authentify/sessions#new'
+  get '/signout', :to => 'authentify/sessions#destroy'
+  get '/user_menus', :to => 'user_menus#index'
+  get '/view_handler', :to => 'authentify/application#view_handler'
 end
