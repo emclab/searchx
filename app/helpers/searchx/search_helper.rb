@@ -13,6 +13,14 @@ module Searchx
       @s_s_results_details =  search_results_(params, @max_pagination)
       @erb_code = find_config_const(params[:controller].sub(/.+\//,'').singularize + '_index_view', params[:controller].sub(/\/.+/,''))
       remember_link() #for Back to land on search_results page.
+      #csv export
+      respond_to do |format|
+        format.html {@s_s_results_details.models}
+        format.csv do
+          send_data @s_s_results_details.models.to_csv
+          @csv = true
+        end
+      end
     end
     
     def stats
@@ -144,7 +152,7 @@ module Searchx
       search_params_hash = search_stat.search_params.present? ? eval(search_stat.search_params) : {} #for id field which needs to retrieve its value.
       search_params = params[symbModel][:time_frame_s].present? ? "<%=t('Time Frame') %>" + "=" + I18n.t(params[symbModel][:time_frame_s]) + ',' : ''
       #SQL
-      access_rights, models, has_record_access = Authentify::UserPrivilegeHelper.access_right_finder(params[:action], params[:controller], nil,nil,nil,nil, session[:user_privilege])
+      access_rights, models, has_record_access = Authentify::UserPrivilegeHelper.access_right_finder(params[:action], params[:controller], session[:user_role_ids], nil,nil,nil,nil, session[:user_id] )
       models = eval(search_stat.search_results_period_limit).call()  #apply search_results_period_limit set in db table
       search_where_hash.each do |key, val|
         if params[symbModel][key].present?
