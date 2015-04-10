@@ -3,4 +3,5 @@
 <% @lf.each do |field, layouts| %>
    <%= f.input field.to_sym, layouts %>
 <% end %>
+<%= f.input :field_changed, :as => :hidden %> 
 </p>
