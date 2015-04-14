@@ -3,5 +3,5 @@
 <% @lf.each do |field, layouts| %>
    <%= f.input field.to_sym, layouts %>
 <% end %>
-<%= f.input :field_changed, :as => :hidden %> 
+<%= f.input :field_changed, :as => :hidden if params[:controller].singularize.camelize.constantize.instance_methods.include?(:field_changed) && params[:controller].singularize.camelize.constantize.instance_methods.include?(:field_changed=) %>
 </p>
