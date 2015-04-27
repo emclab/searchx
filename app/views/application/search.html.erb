@@ -1,7 +1,20 @@
 <div id="main_body">
-  <h4><%= t(@title) %></h4>
-  <%= simple_form_for @model, :method => :get, :url => eval(@results_url)  do |f| %>
+  <div class="container">
+  <div class="page-header clearfix">
+    <div class="pull-left">
+      <h2><%=@title%></h2>
+    </div>
+  </div>
+  <%= form_tag eval(@results_url).to_s, :method => :get, html: { class: 'form-horizontal col-sm-' + BUTTONS_CLS['form-span#'] },
+    wrapper: :horizontal_form,
+    wrapper_mappings: {
+    check_boxes: :horizontal_radio_and_checkboxes,
+    radio_buttons: :horizontal_radio_and_checkboxes,
+    file: :horizontal_file_input,
+    boolean: :horizontal_boolean
+  }  do |f| %>
       <%= render inline: ERB.new(@erb_code).result(binding) %>
   <% end %>
 
+  </div>
 </div>

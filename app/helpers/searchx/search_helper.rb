@@ -64,11 +64,11 @@ module Searchx
       url_path = eval(params[:action] + '_' + params[:controller].sub(/.+\//, '') + '_path')
       model = params[:controller].sub(/.+\//, '').singularize
       sub_hash = ''
-      params[model].map do |k, v|
+      params.map do |k, v|
         if sub_hash.present?
-          sub_hash += '&' + model + '[' + k.to_s  + ']=' + v.to_s
+          sub_hash += '&' + '[' + k.to_s  + ']=' + v.to_s if v.present?
         else
-          sub_hash = model + '[' + k.to_s  + ']=' + v.to_s
+          sub_hash = '[' + k.to_s  + ']=' + v.to_s if v.present?
         end
       end
       return url_path +'?' + sub_hash
@@ -136,8 +136,8 @@ module Searchx
       search_stat = find_search_stat_info(controller)
       symbModel = params[:controller].split('/')[-1].singularize.to_sym
       models, search_params  = apply_search_criteria(symbModel, search_stat, params[controller][:model_ar_r], params)
-      time_frame = params[symbModel][:time_frame_s]
-      search_stat_result = params[symbModel][:time_frame_s].present? ? eval(search_stat.stat_function)[time_frame.to_sym] : []
+      time_frame = params[:time_frame_s]
+      search_stat_result = params[:time_frame_s].present? ? eval(search_stat.stat_function)[time_frame.to_sym] : []
       search_stat_result = [] if search_stat_result.nil?
       stat_summary_result = search_stat.stat_summary_function
       search_summary_result = search_stat.search_summary_function
@@ -150,17 +150,17 @@ module Searchx
       search_stats_max_period_year = Authentify::AuthentifyUtility.find_config_const('search_stats_max_period_year').to_i
       search_where_hash = eval(search_stat.search_where)
       search_params_hash = search_stat.search_params.present? ? eval(search_stat.search_params) : {} #for id field which needs to retrieve its value.
-      search_params = params[symbModel][:time_frame_s].present? ? "<%=t('Time Frame') %>" + "=" + I18n.t(params[symbModel][:time_frame_s]) + ',' : ''
+      search_params = params[:time_frame_s].present? ? "<%=t('Time Frame') %>" + "=" + I18n.t(params[:time_frame_s]) + ',' : ''
       #SQL
       access_rights, models, has_record_access = Authentify::UserPrivilegeHelper.access_right_finder(params[:action], params[:controller], session[:user_role_ids], nil,nil,nil,nil, session[:user_id] )
       models = eval(search_stat.search_results_period_limit).call()  #apply search_results_period_limit set in db table
       search_where_hash.each do |key, val|
-        if params[symbModel][key].present?
+        if params[key].present?
           #the val is a proc that is in the config and has already the "models" variable. 
           #E.g. Proc.new { models.where("projectx_projects.id = ?", params[:project][:project_id_s])}
           models = val.call()
           #param_str = search_params_hash[key].present? ? search_params_hash[key].call() : params[symbModel][key]  #Typeerror if without () into the line below
-          search_params +=  "<%=t('" + key.to_s.humanize.titleize[0..-3] + "')%>" + "=" + (search_params_hash[key].present? ? search_params_hash[key].call() : params[symbModel][key])  + ', '
+          search_params +=  "<%=t('" + key.to_s.humanize.titleize[0..-3] + "')%>" + "=" + (search_params_hash[key].present? ? search_params_hash[key].call() : params[key])  + ', '
         end
       end
       return models, search_params

@@ -1,7 +1,26 @@
 <%#= lf = eval(@search_stat.labels_and_fields) %>
 <p>
 <% @lf.each do |field, layouts| %>
-   <%= f.input field.to_sym, layouts %>
-<% end %>
-<%= f.input :field_changed, :as => :hidden if params[:controller].singularize.camelize.constantize.instance_methods.include?(:field_changed) && params[:controller].singularize.camelize.constantize.instance_methods.include?(:field_changed=)%> 
+    <div class="row">
+      <div class="col-sm-<%=BUTTONS_CLS['left-span#']%> form-group">
+         <%= label_tag layouts[:label] %>
+      </div>
+      <div class="col-sm-<%=BUTTONS_CLS['right-span#']%> form-group">
+      
+       	<% layouts = layouts.delete_if {|k, v| k == :label}%>
+   		<% case layouts.keys[0]%>
+     	<% when :date_field_tag %>
+          <%= date_field_tag field.to_s, nil, placeholder: Date.today.to_s %>
+     	<% when :text_field_tag %>
+     	  <%= text_field_tag field.to_s if layouts.values[0].blank? %>
+     	<% when :select_tag %>
+     	  <%= select_tag field.to_s, options_for_select(layouts.values[0]), include_blank: true %>
+     	<% when :datetime_field_tag %>
+     	  <%= datetime_field_tag field.to_s, nil, placeholder: Time.now.to_s %>
+   		<% end %>
+     </div>
+   </div>
+ 
+<% end  %>
+<%= hidden_field_tag :field_changed %> 
 </p>
