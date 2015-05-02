@@ -1,16 +1,26 @@
+
 <% if @s_s_results_details.stat_summary_result.present? %>
-	<h5><%= t(@s_s_results_details.stat_summary_title) %></h2>	
+    <div class="page-header clearfix">
+       <div class="pull-left">
+    	 <h5><%= t(@s_s_results_details.stat_summary_title) %></h2>
+       </div>
+    </div>	
 	<p><%= render inline: ERB.new(@s_s_results_details.stat_summary_result).result(binding)  %></p>
 <% end %>	
-
-<h5><%= t(@s_s_results_details.stat_title) %></h2>	
-<table class="table table-striped">
-  <tr>
-    <% @s_s_results_details.col_headers.each do |h| %>
+  <div class="page-header clearfix">
+       <div class="pull-left">
+         <h5><%= t(@s_s_results_details.stat_title) %></h2>
+       </div>
+  </div>     	
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <% @s_s_results_details.col_headers.each do |h| %>
         <th><%= t(h) %></th>
-    <% end %>
-  </tr>
-
+      <% end %>
+    </tr>
+  </thead>
+  <tbody>
   <% @s_s_results_details.search_stat_result.each do |m| %>
       <tr>
         <% m.attributes.each do |k, v| %>
@@ -18,6 +28,9 @@
         <% end %>
       </tr>
   <% end %>
-  
+  </tbody>
 </table>
-<%= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :class => BUTTONS_CLS['action'] %>
+<div class="btn-toolbar">
+  <%= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :class => BUTTONS_CLS['action'] %>
+</div>
+

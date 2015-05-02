@@ -1,9 +1,16 @@
 
 <div id="main_body">
-  <h4><%= t(@title) %></h4>
+  <div class="container-fluid">
+  	<div class="page-header clearfix">
+          <div class="pull-left">
+    		<h><%= t(@title) %></h2>
+    	 </div>
+    </div>
 
-  <p>&nbsp;&nbsp;<b><%= t('Search Parameters:') %></b>&nbsp;&nbsp;<%= render inline: @s_s_results_details.search_params %><p>
+    <p>&nbsp;&nbsp;<b><%= t('Search Parameters:') %></b>&nbsp;&nbsp;<%= render inline: @s_s_results_details.search_params %><p>
   
-  <%= render 'form_stats', :locals => { :models => @models} %>
+    <%= render 'form_stats', :locals => { :models => @models} %>
  
+  </div>
+
 </div>

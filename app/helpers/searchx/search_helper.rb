@@ -5,7 +5,7 @@ module Searchx
       @model, @search_stat = search_(params)
       @lf = instance_eval(@search_stat.labels_and_fields)
       @results_url = 'search_results_' + params[:controller].sub(/.+\//,'') + '_path'
-      @erb_code = find_config_const('search_params_view')
+      @erb_code = find_config_const('search_params_view', 'searchx')
     end
 
     def search_results
@@ -28,7 +28,7 @@ module Searchx
       @model, @search_stat = search_(params)
       @lf = instance_eval(@search_stat.labels_and_fields)
       @results_url = 'stats_results_' + params[:controller].sub(/.+\//,'') + '_path'
-      @erb_code = find_config_const('stats_params_view')
+      @erb_code = find_config_const('stats_params_view', 'searchx')
     end
 
     def stats_results
@@ -59,19 +59,20 @@ module Searchx
         session[('page' + session[:page_step].to_s).to_sym] = next_url 
       end
     end
-    
+
+    #re-assemble the search url for Back button to land on later.
     def form_full_url()
       url_path = eval(params[:action] + '_' + params[:controller].sub(/.+\//, '') + '_path')
       model = params[:controller].sub(/.+\//, '').singularize
       sub_hash = ''
       params.map do |k, v|
         if sub_hash.present?
-          sub_hash += '&' + '[' + k.to_s  + ']=' + v.to_s if v.present?
+          sub_hash += '&' + k.to_s  + '=' + v.to_s if v.present? && k.to_s.include?('_s')
         else
-          sub_hash = '[' + k.to_s  + ']=' + v.to_s if v.present?
+          sub_hash = k.to_s  + '=' + v.to_s if v.present? && k.to_s.include?('_s')
         end
       end
-      return url_path +'?' + sub_hash
+      return url_path +'?' + sub_hash        #ex, base_part/parts/search?name_s=&category_id=...
     end
    
     class SearchStatsDetails
@@ -134,7 +135,7 @@ module Searchx
       controller = params[:controller].sub('/','_')
       #search_stat = SEARCH_STAT_INFO[controller]
       search_stat = find_search_stat_info(controller)
-      symbModel = params[:controller].split('/')[-1].singularize.to_sym
+      symbModel = nil #params[:controller].split('/')[-1].singularize.to_sym
       models, search_params  = apply_search_criteria(symbModel, search_stat, params[controller][:model_ar_r], params)
       time_frame = params[:time_frame_s]
       search_stat_result = params[:time_frame_s].present? ? eval(search_stat.stat_function)[time_frame.to_sym] : []
