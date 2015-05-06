@@ -11,8 +11,7 @@
     check_boxes: :horizontal_radio_and_checkboxes,
     radio_buttons: :horizontal_radio_and_checkboxes,
     file: :horizontal_file_input,
-    boolean: :horizontal_boolean
-  }  do |f| %>
+    boolean: :horizontal_boolean } do  %>
       <%= render inline: ERB.new(@erb_code).result(binding) %>
   <% end %>
 
