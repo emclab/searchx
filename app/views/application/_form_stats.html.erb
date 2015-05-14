@@ -17,7 +17,7 @@
     <tr>
       <% @s_s_results_details.col_headers.each do |h| %>
         <th><%= t(h) %></th>
-      <% end %>
+      <% end if @s_s_results_details.col_headers.present? %>
     </tr>
   </thead>
   <tbody>
