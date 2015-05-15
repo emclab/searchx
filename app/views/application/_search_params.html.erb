@@ -1,4 +1,8 @@
-<%#= lf = eval(@search_stat.labels_and_fields) %>
+<% if @view_in_config && @search_params_partial_erb_code %>
+  <%= render inline: @search_params_partial_erb_code %>
+  
+<% else %>
+
 <p>
 <% @lf.each do |field, layouts| %>
     <div class="row">
@@ -24,3 +28,5 @@
 <% end  %>
 <%= hidden_field_tag :field_changed %> 
 </p>
+
+<% end %>

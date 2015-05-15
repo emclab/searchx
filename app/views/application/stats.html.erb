@@ -1,3 +1,8 @@
+<% if @view_in_config && @erb_code %>
+  <%= render inline: @erb_code %>
+  
+<% else %>
+
 <div id="main_body">
   <div class="container">
    <div class="page-header clearfix">
@@ -12,8 +17,26 @@
     radio_buttons: :horizontal_radio_and_checkboxes,
     file: :horizontal_file_input,
     boolean: :horizontal_boolean } do  %>
-      <%= render inline: ERB.new(@erb_code).result(binding) %>
+    
+      <div class="row">
+       <div class="col-sm-<%=BUTTONS_CLS['left-span#']%> form-group">
+          <%= label_tag t('Stats Method') %>
+       </div>
+       <div class="col-sm-<%=BUTTONS_CLS['right-span#']%> form-group">
+            <%= select_tag 'time_frame_s', options_for_select(eval(@search_stat.time_frame))  %></p>
+       </div>
+    </div>
+    <%=render  :partial => 'search_params' %>
+
+     </div class="btn-toolbar">
+        <%= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :class => BUTTONS_CLS['action'] %>
+        <%= submit_tag t('Stats') , :class =>  BUTTONS_CLS['action'] %>
+    </div>
+
+      <%#= render inline: ERB.new(@erb_code).result(binding) %>
   <% end %>
   
  </div>
 </div>
+
+<% end %>

@@ -6,12 +6,14 @@ module Searchx
       @lf = instance_eval(@search_stat.labels_and_fields)
       @results_url = 'search_results_' + params[:controller].sub(/.+\//,'') + '_path'
       @erb_code = find_config_const('search_params_view', 'searchx')
+      @search_params_partial_erb_code = find_config_const('search_params_partial_view', 'searchx')
     end
 
     def search_results
-      @title = params[:controller].camelize.demodulize.tableize.singularize.titleize + ' Search'
+      @title = params[:controller].sub(/.+\//,'').singularize.titleize + ' Search'
       @s_s_results_details =  search_results_(params, @max_pagination)
-      @erb_code = find_config_const(params[:controller].sub(/.+\//,'').singularize + '_index_view', params[:controller].sub(/\/.+/,''))
+      #@erb_code = find_config_const(params[:controller].sub(/.+\//,'').singularize + '_index_view', params[:controller].sub(/\/.+/,''))
+      @erb_code = find_config_const('search_results_view', 'searchx')
       remember_link() #for Back to land on search_results page.
       #csv export
       respond_to do |format|
@@ -29,13 +31,16 @@ module Searchx
       @lf = instance_eval(@search_stat.labels_and_fields)
       @results_url = 'stats_results_' + params[:controller].sub(/.+\//,'') + '_path'
       @erb_code = find_config_const('stats_params_view', 'searchx')
+      @search_params_partial_erb_code = find_config_const('search_params_partial_view', 'searchx')
     end
 
     def stats_results
       @title = params[:controller].sub(/.+\//,'').singularize.titleize + ' Stats' 
       @s_s_results_details =  search_results_(params, @max_pagination)
       @time_frame = eval(@s_s_results_details.time_frame)
-      @erb_code = find_config_const(params[:controller].sub(/.+\//,'').singularize + '_index_view', params[:controller].sub(/\/.+/,''))
+      #@erb_code = find_config_const(params[:controller].sub(/.+\//,'').singularize + '_index_view', params[:controller].sub(/\/.+/,''))
+      @erb_code = find_config_const('stats_results_view', 'searchx')
+      @stats_partial_erb_code = find_config_const('stats_partial_index_view', 'searchx')
     end
     
     #==
@@ -151,7 +156,7 @@ module Searchx
       search_stats_max_period_year = Authentify::AuthentifyUtility.find_config_const('search_stats_max_period_year').to_i
       search_where_hash = eval(search_stat.search_where)
       search_params_hash = search_stat.search_params.present? ? eval(search_stat.search_params) : {} #for id field which needs to retrieve its value.
-      search_params = params[:time_frame_s].present? ? "<%=t('Time Frame') %>" + "=" + I18n.t(params[:time_frame_s]) + ',' : ''
+      search_params = params[:time_frame_s].present? ? "<%=t('Stats Method') %>" + "=" + I18n.t(params[:time_frame_s]) + ',' : ''
       #SQL
       access_rights, models, has_record_access = Authentify::UserPrivilegeHelper.access_right_finder(params[:action], params[:controller], session[:user_role_ids], nil,nil,nil,nil, session[:user_id] )
       models = eval(search_stat.search_results_period_limit).call()  #apply search_results_period_limit set in db table

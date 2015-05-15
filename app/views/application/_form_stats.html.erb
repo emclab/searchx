@@ -1,3 +1,7 @@
+<% if @view_in_config && @stats_partial_erb_code %>
+  <%= render inline: @stats_partial_erb_code %>
+  
+<% else %>
 
 <% if @s_s_results_details.stat_summary_result.present? %>
     <div class="page-header clearfix">
@@ -33,4 +37,6 @@
 <div class="btn-toolbar">
   <%= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :class => BUTTONS_CLS['action'] %>
 </div>
+
+<% end %>
 

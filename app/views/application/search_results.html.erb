@@ -1,3 +1,7 @@
+<% if @view_in_config && @erb_code %>
+  <%= render inline: @erb_code %>
+  
+<% else %>
 
 <div id="main_body">
   <div class="container-fluid">
@@ -12,3 +16,5 @@
    <%= render partial: @s_s_results_details.search_list_form, locals: {models: @s_s_results_details.models } %> 
   </div>
 </div>
+
+<% end %>
