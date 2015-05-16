@@ -5,7 +5,7 @@ module Searchx
       @model, @search_stat = search_(params)
       @lf = instance_eval(@search_stat.labels_and_fields)
       @results_url = 'search_results_' + params[:controller].sub(/.+\//,'') + '_path'
-      @erb_code = find_config_const('search_params_view', 'searchx')
+      @erb_code_s = find_config_const('search_params_view', 'searchx')
       @search_params_partial_erb_code = find_config_const('search_params_partial_view', 'searchx')
     end
 
@@ -13,7 +13,8 @@ module Searchx
       @title = params[:controller].sub(/.+\//,'').singularize.titleize + ' Search'
       @s_s_results_details =  search_results_(params, @max_pagination)
       #@erb_code = find_config_const(params[:controller].sub(/.+\//,'').singularize + '_index_view', params[:controller].sub(/\/.+/,''))
-      @erb_code = find_config_const('search_results_view', 'searchx')
+      @erb_code_s = find_config_const('search_results_view', 'searchx')
+      @erb_code = find_config_const(params[:controller].sub(/.+\//,'') + '_index_view', params[:controller].sub(/\/.+/, ''))  #index view code for the engine/module
       remember_link() #for Back to land on search_results page.
       #csv export
       respond_to do |format|
@@ -30,7 +31,7 @@ module Searchx
       @model, @search_stat = search_(params)
       @lf = instance_eval(@search_stat.labels_and_fields)
       @results_url = 'stats_results_' + params[:controller].sub(/.+\//,'') + '_path'
-      @erb_code = find_config_const('stats_params_view', 'searchx')
+      @erb_code_s = find_config_const('stats_params_view', 'searchx')
       @search_params_partial_erb_code = find_config_const('search_params_partial_view', 'searchx')
     end
 
@@ -39,7 +40,7 @@ module Searchx
       @s_s_results_details =  search_results_(params, @max_pagination)
       @time_frame = eval(@s_s_results_details.time_frame)
       #@erb_code = find_config_const(params[:controller].sub(/.+\//,'').singularize + '_index_view', params[:controller].sub(/\/.+/,''))
-      @erb_code = find_config_const('stats_results_view', 'searchx')
+      @erb_code_s = find_config_const('stats_results_view', 'searchx')
       @stats_partial_erb_code = find_config_const('stats_partial_index_view', 'searchx')
     end
     
