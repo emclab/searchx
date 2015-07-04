@@ -1,7 +1,7 @@
 module Searchx
   module SearchHelper
     def search
-      @title = params[:controller].sub(/.+\//,'').singularize.titleize + ' Search'  
+      @title_ = params[:controller].sub(/.+\//,'').singularize.titleize + ' Search'  
       @model, @search_stat = search_(params)
       @lf = instance_eval(@search_stat.labels_and_fields)
       @results_url = 'search_results_' + params[:controller].sub(/.+\//,'') + '_path'
@@ -10,7 +10,7 @@ module Searchx
     end
 
     def search_results
-      @title = params[:controller].sub(/.+\//,'').singularize.titleize + ' Search'
+      @title_ = params[:controller].sub(/.+\//,'').singularize.titleize + ' Search'
       @s_s_results_details =  search_results_(params, @max_pagination)
       #@erb_code = find_config_const(params[:controller].sub(/.+\//,'').singularize + '_index_view', params[:controller].sub(/\/.+/,''))
       @erb_code_s = find_config_const('search_results_view', 'searchx')
@@ -27,7 +27,7 @@ module Searchx
     end
     
     def stats
-      @title = params[:controller].sub(/.+\//,'').singularize.titleize + ' Stats' 
+      @title_ = params[:controller].sub(/.+\//,'').singularize.titleize + ' Stats' 
       @model, @search_stat = search_(params)
       @lf = instance_eval(@search_stat.labels_and_fields)
       @results_url = 'stats_results_' + params[:controller].sub(/.+\//,'') + '_path'
@@ -36,7 +36,7 @@ module Searchx
     end
 
     def stats_results
-      @title = params[:controller].sub(/.+\//,'').singularize.titleize + ' Stats' 
+      @title_ = params[:controller].sub(/.+\//,'').singularize.titleize + ' Stats' 
       @s_s_results_details =  search_results_(params, @max_pagination)
       @time_frame = eval(@s_s_results_details.time_frame)
       #@erb_code = find_config_const(params[:controller].sub(/.+\//,'').singularize + '_index_view', params[:controller].sub(/\/.+/,''))

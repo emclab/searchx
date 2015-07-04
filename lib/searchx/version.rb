@@ -1,3 +1,3 @@
 module Searchx
-  VERSION = "04"
+  VERSION = "05"
 end
