@@ -3,19 +3,17 @@
   
 <% else %>
 
-<div id="main_body">
-  <div class="container-fluid">
+<div class="container-fluid">
   	<div class="page-header clearfix">
           <div class="pull-left">
-    		<h><%= t(@title) %></h2>
+    		<h><%= t(@title_) %></h2>
     	 </div>
     </div>
 
-    <p>&nbsp;&nbsp;<b><%= t('Search Parameters:') %></b>&nbsp;&nbsp;<%= render inline: @s_s_results_details.search_params %><p>
+    &nbsp;&nbsp;<b><%= t('Search Parameters:') %></b>&nbsp;&nbsp;<%= render inline: @s_s_results_details.search_params %>
   
     <%= render 'form_stats', :locals => { :models => @models} %>
  
-  </div>
 
 </div>
 

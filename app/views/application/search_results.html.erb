@@ -3,18 +3,17 @@
  
 <% else %>
 
-<div id="main_body">
-  <div class="container-fluid">
+<div class="container-fluid">
         <div class="page-header clearfix">
           <div class="pull-left">
-             <h2><%= t(@title) %></h2>
+             <h2><%= t(@title_) %></h2>
           </div>
         </div>
 
-  <p>&nbsp;&nbsp;<b><%= t('Search Parameters:') %></b>&nbsp;&nbsp;<%= render inline: @s_s_results_details.search_params %></p>
-  <p><%= render inline: ERB.new(@s_s_results_details.search_summary_result).result(binding) if @s_s_results_details.search_summary_result.present? %></p>
-   <%= render partial: @s_s_results_details.search_list_form, locals: {models: @s_s_results_details.models } %> 
-  </div>
+  &nbsp;&nbsp;<b><%= t('Search Parameters:') %></b>&nbsp;&nbsp;<%= render inline: @s_s_results_details.search_params %>
+  <%= render inline: ERB.new(@s_s_results_details.search_summary_result).result(binding) if @s_s_results_details.search_summary_result.present? %>
+  <%= render partial: @s_s_results_details.search_list_form, locals: {models: @s_s_results_details.models } %>
+   
 </div>
 
 <% end %>

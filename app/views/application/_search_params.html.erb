@@ -3,7 +3,6 @@
   
 <% else %>
 
-<p>
 <% @lf.each do |field, layouts| %>
     <div class="row">
       <div class="col-sm-<%=BUTTONS_CLS['left-span#']%> form-group">
@@ -27,6 +26,6 @@
  
 <% end  %>
 <%= hidden_field_tag :field_changed %> 
-</p>
+
 
 <% end %>

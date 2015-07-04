@@ -3,11 +3,10 @@
   
 <% else %>
 
-<div id="main_body">
-  <div class="container">
+<div class="container">
   <div class="page-header clearfix">
     <div class="pull-left">
-      <h2><%=@title%></h2>
+      <h2><%=t(@title_) %></h2>
     </div>
   </div>
   <%= form_tag eval(@results_url).to_s, :method => :get, html: { class: 'form-horizontal col-sm-' + BUTTONS_CLS['form-span#'] },
@@ -21,13 +20,12 @@
          <%=render  :partial => 'search_params' %>
       
          <div class="btn-toolbar">
-           <%= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :class => BUTTONS_CLS['action'] %>
+           <%= link_to t('Back'), SUBURI + "/view_handler?index=0", :class => BUTTONS_CLS['action'] %>
            <%= submit_tag t('Search') , :class =>  BUTTONS_CLS['action'] %>
          </div>
 
   <% end %>
 
-  </div>
 </div>
 
 <% end %>

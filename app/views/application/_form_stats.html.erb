@@ -4,18 +4,9 @@
 <% else %>
 
 <% if @s_s_results_details.stat_summary_result.present? %>
-    <div class="page-header clearfix">
-       <div class="pull-left">
-    	 <h5><%= t(@s_s_results_details.stat_summary_title) %></h2>
-       </div>
-    </div>	
-	<p><%= render inline: ERB.new(@s_s_results_details.stat_summary_result).result(binding)  %></p>
+	<%= render inline: ERB.new(@s_s_results_details.stat_summary_result).result(binding)  %>
 <% end %>	
-  <div class="page-header clearfix">
-       <div class="pull-left">
-         <h5><%= t(@s_s_results_details.stat_title) %></h2>
-       </div>
-  </div>     	
+<p></p>     	
 <table class="table table-hover">
   <thead>
     <tr>
@@ -35,7 +26,7 @@
   </tbody>
 </table>
 <div class="btn-toolbar">
-  <%= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :class => BUTTONS_CLS['action'] %>
+  <%= link_to t('Back'), SUBURI + "/view_handler?index=0", :class => BUTTONS_CLS['action'] %>
 </div>
 
 <% end %>
