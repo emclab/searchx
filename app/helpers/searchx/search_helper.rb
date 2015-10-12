@@ -14,7 +14,7 @@ module Searchx
       @s_s_results_details =  search_results_(params, @max_pagination)
       #@erb_code = find_config_const(params[:controller].sub(/.+\//,'').singularize + '_index_view', params[:controller].sub(/\/.+/,''))
       @erb_code_s = find_config_const('search_results_view', 'searchx')
-      @erb_code = find_config_const(params[:controller].sub(/.+\//,'') + '_index_view', params[:controller].sub(/\/.+/, ''))  #index view code for the engine/module
+      @erb_code = find_config_const(params[:controller].sub(/.+\//,'').singularize + '_index_view', params[:controller].sub(/\/.+/, ''))  #index view code for the engine/module
       remember_link() #for Back to land on search_results page.
       #csv export
       respond_to do |format|
@@ -76,7 +76,7 @@ module Searchx
           sub_hash += '&' + k.to_s  + '=' + v.to_s if v.present? && k.to_s.include?('_s')
         else
           sub_hash = k.to_s  + '=' + v.to_s if v.present? && k.to_s.include?('_s')
-        end
+        end if v.is_a?(String)   #saving object will overflow cookie
       end
       return url_path +'?' + sub_hash        #ex, base_part/parts/search?name_s=&category_id=...
     end

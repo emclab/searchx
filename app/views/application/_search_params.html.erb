@@ -20,6 +20,9 @@
      	  <%= select_tag field.to_s, options_for_select(layouts.values[0]), include_blank: true %>
      	<% when :datetime_field_tag %>
      	  <%= datetime_field_tag field.to_s, nil, placeholder: Time.now.to_s %>
+     	<% when :text_area_tag %>
+     	  <%= text_area_tag field.to_s, rows: layouts.values[1] if layouts.values[1] %>
+     	  <%= text_area_tag field.to_s if layouts.values[1].blank? %>
    		<% end %>
      </div>
    </div>
