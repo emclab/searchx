@@ -15,14 +15,17 @@
      	<% when :date_field_tag %>
           <%= date_field_tag field.to_s, nil, placeholder: Date.today.to_s %>
      	<% when :text_field_tag %>
-     	  <%= text_field_tag field.to_s if layouts.values[0].blank? %>
+     	  <%= text_field_tag field.to_s if layouts.size == 1 %>
+          <%= text_field_tag field.to_s, nil, layouts.keys[1] => layouts.values[1] if layouts.size == 2 %>
+          <%= text_field_tag field.to_s, nil, layouts.keys[1] => layouts.values[1], layouts.keys[2] => layouts.values[2] if layouts.size == 3 %>
      	<% when :select_tag %>
      	  <%= select_tag field.to_s, options_for_select(layouts.values[0]), include_blank: true %>
      	<% when :datetime_field_tag %>
      	  <%= datetime_field_tag field.to_s, nil, placeholder: Time.now.to_s %>
      	<% when :text_area_tag %>
-     	  <%= text_area_tag field.to_s, rows: layouts.values[1] if layouts.values[1] %>
-     	  <%= text_area_tag field.to_s if layouts.values[1].blank? %>
+     	  <%= text_area_tag field.to_s if layouts.size == 1 %>
+     	  <%= text_area_tag field.to_s, nil, layouts.keys[1] => layouts.values[1] if layouts.size == 2 %>
+     	  <%= text_area_tag field.to_s, nil, layouts.keys[1] => layouts.values[1], layouts.keys[2] => layouts.values[2] if layouts.size == 3 %>
    		<% end %>
      </div>
    </div>
