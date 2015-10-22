@@ -6,6 +6,7 @@ module Searchx
       @lf = instance_eval(@search_stat.labels_and_fields)
       @results_url = 'search_results_' + params[:controller].sub(/.+\//,'') + '_path'
       @erb_code_s = find_config_const('search_params_view', 'searchx')
+      @js_erb_code_s = find_config_const(params[:controller].sub(/.+\//,'').singularize + '_search_js_view', params[:controller].sub(/\/.+/, '')) 
       @search_params_partial_erb_code = find_config_const('search_params_partial_view', 'searchx')
     end
 
@@ -32,6 +33,7 @@ module Searchx
       @lf = instance_eval(@search_stat.labels_and_fields)
       @results_url = 'stats_results_' + params[:controller].sub(/.+\//,'') + '_path'
       @erb_code_s = find_config_const('stats_params_view', 'searchx')
+      @js_erb_code_s = find_config_const(params[:controller].sub(/.+\//,'').singularize + '_search_js_view', params[:controller].sub(/\/.+/, '')) 
       @search_params_partial_erb_code = find_config_const('search_params_partial_view', 'searchx')
     end
 
