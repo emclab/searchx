@@ -1,0 +1,49 @@
+<% if @erb_code_s %>
+  <%= render inline: @erb_code_s %>
+  
+<% else %>
+
+<div class="container-fluid">
+  	<div class="page-header clearfix">
+          <div class="pull-left">
+    		<h><%= @title_ %></h2>
+    	 </div>
+    </div>
+
+    &nbsp;&nbsp;<b><%= t('Summary Parameters:') %></b>&nbsp;&nbsp;<%= render inline: @s_s_results_details.search_params %>
+  
+    <%#= render 'form_acct_summary' %>
+  <table class="table table-hover">
+  <thead>
+    <tr>
+       <th><%= t('Customer') %></th>
+       <th><%= t('Project') %></th>
+       <th><%= t('Received($)') %></th>
+       <th><%= t(''Paid($)) %></th>
+       <th><%= t('Appvoed') %></th>
+       <th><%= t('Total($)') %></th>
+       <th><%= t('Profit($)') %></th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @s_s_results_details.models.each do |m| %>
+    <tr>
+       <td><%= m.customer.short_name %></td>
+       <td><%= m.name %></td>
+       <td><%= number_with_precision(@receivable[m.id.to_s], :precision => 2, :separator => '.') %></td>
+       <td><%= number_with_precision(@payable_paid[m.id.to_s], :precision => 2, :separator => '.') %></td>
+       <td><%= number_with_precision(@payable_approved[m.id.to_s], :precision => 2, :separator => '.') %></td>
+       <td><%= number_with_precision(@payable_total[m.id.to_s], :precision => 2, :separator => '.') %></td>
+       <td><%= number_with_precision(@receivable[m.id.to_s] - @payable_total[m.id.to_s], :precision => 2, :separator => '.') %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+<div class="btn-toolbar">
+  <%= link_to t('Back'), :back, :class => BUTTONS_CLS['action'] %>
+</div>
+ 
+
+</div>
+
+<% end %>

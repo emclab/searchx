@@ -1,4 +1,4 @@
-<% if @view_in_config && @erb_code_s %>
+<% if @erb_code_s %>
   <%= render inline: @erb_code_s %>
   
 <% else %>
@@ -21,7 +21,7 @@
       
          <div class="btn-toolbar">
            <%= link_to t('Back'), SUBURI + "/view_handler?index=0", :class => BUTTONS_CLS['action'] %>
-           <%= submit_tag t('Search') , :class =>  BUTTONS_CLS['action'] %>
+           <%= submit_tag t('Submit') , :class =>  BUTTONS_CLS['action'] %>
          </div>
 
   <% end %>

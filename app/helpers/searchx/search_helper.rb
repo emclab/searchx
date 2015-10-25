@@ -1,7 +1,7 @@
 module Searchx
   module SearchHelper
     def search
-      @title_ = params[:controller].sub(/.+\//,'').singularize.titleize + ' Search'  
+      @title_ = t(params[:controller].sub(/.+\//,'').singularize.titleize + ' Search')  
       @model, @search_stat = search_(params)
       @lf = instance_eval(@search_stat.labels_and_fields)
       @results_url = 'search_results_' + params[:controller].sub(/.+\//,'') + '_path'
@@ -11,7 +11,7 @@ module Searchx
     end
 
     def search_results
-      @title_ = params[:controller].sub(/.+\//,'').singularize.titleize + ' Search'
+      @title_ = t(params[:controller].sub(/.+\//,'').singularize.titleize + ' Search')
       @s_s_results_details =  search_results_(params, @max_pagination)
       #@erb_code = find_config_const(params[:controller].sub(/.+\//,'').singularize + '_index_view', params[:controller].sub(/\/.+/,''))
       @erb_code_s = find_config_const('search_results_view', 'searchx')
@@ -28,7 +28,7 @@ module Searchx
     end
     
     def stats
-      @title_ = params[:controller].sub(/.+\//,'').singularize.titleize + ' Stats' 
+      @title_ = t(params[:controller].sub(/.+\//,'').singularize.titleize + ' Stats') 
       @model, @search_stat = search_(params)
       @lf = instance_eval(@search_stat.labels_and_fields)
       @results_url = 'stats_results_' + params[:controller].sub(/.+\//,'') + '_path'
@@ -38,12 +38,54 @@ module Searchx
     end
 
     def stats_results
-      @title_ = params[:controller].sub(/.+\//,'').singularize.titleize + ' Stats' 
+      @title_ = t(params[:controller].sub(/.+\//,'').singularize.titleize + ' Stats') 
       @s_s_results_details =  search_results_(params, @max_pagination)
       @time_frame = eval(@s_s_results_details.time_frame)
       #@erb_code = find_config_const(params[:controller].sub(/.+\//,'').singularize + '_index_view', params[:controller].sub(/\/.+/,''))
       @erb_code_s = find_config_const('stats_results_view', 'searchx')
       @stats_partial_erb_code = find_config_const('stats_partial_index_view', 'searchx')
+    end
+    
+    def acct_summary
+      @title_ = t(params[:controller].sub(/.+\//,'').singularize.titleize + ' Summary') 
+      @model, @search_stat = search_(params)
+      @lf = instance_eval(@search_stat.labels_and_fields)
+      @results_url = 'acct_summary_result_' + params[:controller].sub(/.+\//,'') + '_path'
+      @erb_code_s = find_config_const('search_params_view', 'searchx')
+      @js_erb_code_s = find_config_const(params[:controller].sub(/.+\//,'').singularize + '_search_js_view', params[:controller].sub(/\/.+/, '')) 
+      @search_params_partial_erb_code = find_config_const('search_params_partial_view', 'searchx')
+    end
+    
+    def acct_summary_result
+      @title_ = t(params[:controller].sub(/.+\//,'').singularize.titleize + ' Summary') 
+      @s_s_results_details =  search_results_(params, @max_pagination)
+      @erb_code_s = find_config_const(params[:controller].sub(/.+\//,'').singularize + '_acct_summary_view', params[:controller].sub(/\/.+/, ''))
+      receivable(@s_s_results_details.models)
+      payable(@s_s_results_details.models)
+    end
+    
+    def receivable(models)
+      wf = Authentify::AuthentifyUtility.find_config_const(params[:controller].sub(/.+\//,'').singularize + '_acct_receivable_eval', params[:controller].sub(/\/.+/, ''))
+      eval(wf) if wf.present?
+=begin
+      @receivable = {}
+      models.each do |m|
+        @receivable[m.id.to_s] = InPaymentx::Payment.where(project_id: m.id).sum('paid_amount')
+      end
+=end
+    end
+    
+    def payable(models)
+      wf = Authentify::AuthentifyUtility.find_config_const(params[:controller].sub(/.+\//,'').singularize + '_acct_payable_eval', params[:controller].sub(/\/.+/, ''))
+      eval(wf) if wf.present?
+=begin
+      @payable_approved_unpaid, @payable_paid, @payable_po_unpaid = {}, {}, {}
+      models.each do |m|
+        @payable_po_unpaid[m.id.to_s] = PurchaseOrderx::Order.where(project_id: m.id).sum('po_total') - PaymentRequestx::PaymentRequest.where(project_id: m.id).where(resource_string: 'purchase_orderx/orders').sum('amount')
+        @payable_paid[m.id.to_s] = PaymentRequestx::PaymentRequest.where(project_id: m.id).where(wf_state: :paid).sum('amount')
+        @payable_approved_unpaid[m.id.to_s] = PaymentRequestx::PaymentRequest.where(project_id: m.id).where('approved = ? AND wf_state != ?', true, :paid).sum('amount')
+      end
+=end
     end
     
     #==

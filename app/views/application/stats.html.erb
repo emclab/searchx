@@ -6,7 +6,7 @@
 <div class="container">
    <div class="page-header clearfix">
     <div class="pull-left">
-      <h2><%=t(@title_)%></h2>
+      <h2><%=@title_%></h2>
     </div>
    </div>
   <%= form_tag eval(@results_url).to_s, :method => :get, html: { class: 'form-horizontal col-sm-' + BUTTONS_CLS['form-span#'] },
