@@ -41,9 +41,11 @@ module Searchx
       @title_ = t(params[:controller].sub(/.+\//,'').singularize.titleize + ' Stats') 
       @s_s_results_details =  search_results_(params, @max_pagination)
       @time_frame = eval(@s_s_results_details.time_frame)
-      #@erb_code = find_config_const(params[:controller].sub(/.+\//,'').singularize + '_index_view', params[:controller].sub(/\/.+/,''))
-      @erb_code_s = find_config_const('stats_results_view', 'searchx')
+      @erb_code_s_s = find_config_const('stats_results_view', 'searchx')
       @stats_partial_erb_code = find_config_const('stats_partial_index_view', 'searchx')
+      @dataset_url = eval('search_results_' + params[:controller].sub(/.+\//,'') + '_path') + '?' + params_string(params)
+      @erb_code_s = find_config_const('search_results_view', 'searchx')
+      @erb_code = find_config_const(params[:controller].sub(/.+\//,'').singularize + '_index_view', params[:controller].sub(/\/.+/, ''))  #index view code for the engine/module
     end
     
     def acct_summary
@@ -114,15 +116,19 @@ module Searchx
     def form_full_url()
       url_path = eval(params[:action] + '_' + params[:controller].sub(/.+\//, '') + '_path')
       model = params[:controller].sub(/.+\//, '').singularize
+      return url_path +'?' + params_string(params)        #ex, base_part/parts/search?name_s=&category_id=...
+    end
+    
+    def params_string(params)
       sub_hash = ''
       params.map do |k, v|
         if sub_hash.present?
-          sub_hash += '&' + k.to_s  + '=' + v.to_s if v.present? && k.to_s.include?('_s')
+          sub_hash += '&' + k.to_s + '=' + v.to_s  if v.present? && k.to_s != 'utf8' && k.to_s != 'commit' && k.to_s != 'action' && k.to_s != 'controller' && !k.to_s.include?('/') && k.to_s != 'field_changed' && k.to_s != params[:controller].sub('/', '_') ## && k.to_s.include?('_s') #(k.to_s != 'action' || k.to_s != params[:controller] || k.to_s != 'controller')  #.include?('_s')
         else
-          sub_hash = k.to_s  + '=' + v.to_s if v.present? && k.to_s.include?('_s')
-        end if v.is_a?(String)   #saving object will overflow cookie
+          sub_hash =  k.to_s + '=' + v.to_s if v.present? && k.to_s != 'utf8' && k.to_s != 'commit' && k.to_s != 'action' && k.to_s != 'controller' && !k.to_s.include?('/') && k.to_s != 'field_changed' && k.to_s != params[:controller].sub('/', '_') ##&& k.to_s.include?('_s') #(k.to_s != 'action' || k.to_s != params[:controller] || k.to_s != 'controller') #  #remember to end a name of a variable with '_s' in search
+        end if v.is_a?(String)  #saving object will overflow cookie
       end
-      return url_path +'?' + sub_hash        #ex, base_part/parts/search?name_s=&category_id=...
+      return sub_hash
     end
    
     class SearchStatsDetails

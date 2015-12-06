@@ -1,5 +1,5 @@
-<% if @view_in_config && @erb_code_s %>
-  <%= render inline: @erb_code_s %>
+<% if @view_in_config && @erb_code_s_s %>
+  <%= render inline: @erb_code_s_s %>
   
 <% else %>
 
@@ -14,7 +14,7 @@
   
     <%= render 'form_stats', :locals => { :models => @models} %>
  
-
+    <%= link_to 'Dataset', @dataset_url, onclick: "var w = window.open(this.href, height=200,width=200); w.focus(); return false;" %>
 </div>
 
 <% end %>
