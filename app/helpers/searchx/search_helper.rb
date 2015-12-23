@@ -61,13 +61,15 @@ module Searchx
     def acct_summary_result
       @title_ = t(params[:controller].sub(/.+\//,'').singularize.titleize + ' Summary') 
       @s_s_results_details =  search_results_(params, @max_pagination)
-      @erb_code_s = find_config_const(params[:controller].sub(/.+\//,'').singularize + '_acct_summary_view', params[:controller].sub(/\/.+/, ''))
+      @erb_code_s = find_config_const(params[:controller].sub(/.+\//,'').singularize + '_acct_summary_view', params[:controller].sub(/\/.+/, '')) if params[:for_which].blank?
+      @erb_code_s = find_config_const(params[:controller].sub(/.+\//,'').singularize + '_acct_summary_view' + '_' + params[:for_which].strip, params[:controller].sub(/\/.+/, '')) if params[:for_which].present?
       receivable(@s_s_results_details.models)
       payable(@s_s_results_details.models)
     end
     
     def receivable(models)
-      wf = Authentify::AuthentifyUtility.find_config_const(params[:controller].sub(/.+\//,'').singularize + '_acct_receivable_eval', params[:controller].sub(/\/.+/, ''))
+      wf = Authentify::AuthentifyUtility.find_config_const(params[:controller].sub(/.+\//,'').singularize + '_acct_receivable_eval', params[:controller].sub(/\/.+/, '')) if params[:for_which].blank?
+      wf = Authentify::AuthentifyUtility.find_config_const(params[:controller].sub(/.+\//,'').singularize + '_acct_receivable_eval' + '_' + params[:for_which].strip, params[:controller].sub(/\/.+/, '')) if params[:for_which].present?
       eval(wf) if wf.present?
 =begin
       @receivable = {}
@@ -78,7 +80,8 @@ module Searchx
     end
     
     def payable(models)
-      wf = Authentify::AuthentifyUtility.find_config_const(params[:controller].sub(/.+\//,'').singularize + '_acct_payable_eval', params[:controller].sub(/\/.+/, ''))
+      wf = Authentify::AuthentifyUtility.find_config_const(params[:controller].sub(/.+\//,'').singularize + '_acct_payable_eval', params[:controller].sub(/\/.+/, '')) if params[:for_which].blank?
+      wf = Authentify::AuthentifyUtility.find_config_const(params[:controller].sub(/.+\//,'').singularize + '_acct_payable_eval' + '_' + params[:for_which].strip, params[:controller].sub(/\/.+/, '')) if params[:for_which].present?
       eval(wf) if wf.present?
 =begin
       @payable_approved_unpaid, @payable_paid, @payable_po_unpaid = {}, {}, {}
