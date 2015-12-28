@@ -1,31 +1,31 @@
-<% if @view_in_config && @search_params_partial_erb_code %>
+<% if @search_params_partial_erb_code %>
   <%= render inline: @search_params_partial_erb_code %>
   
 <% else %>
 
 <% @lf.each do |field, layouts| %>
-    <div class="row">
-      <div class="col-sm-<%=BUTTONS_CLS['left-span#']%> form-group">
+    <div class="form-group">
+      <div class="control-label col-sm-<%=BUTTONS_CLS['left-span#']%>"> 
          <%= label_tag layouts[:label] %>
       </div>
-      <div class="col-sm-<%=BUTTONS_CLS['right-span#']%> form-group">
+      <div class="col-sm-<%=BUTTONS_CLS['right-span#']%>">
       
        	<% layouts = layouts.delete_if {|k, v| k == :label}%>
    		<% case layouts.keys[0]%>
      	<% when :date_field_tag %>
-          <%= date_field_tag field.to_s, nil, placeholder: Date.today.to_s %>
+          <%= date_field_tag field.to_s, nil, placeholder: Date.today.to_s, class: 'form-control' %>
      	<% when :text_field_tag %>
-     	  <%= text_field_tag field.to_s if layouts.size == 1 %>
-          <%= text_field_tag field.to_s, nil, layouts.keys[1] => layouts.values[1] if layouts.size == 2 %>
-          <%= text_field_tag field.to_s, nil, layouts.keys[1] => layouts.values[1], layouts.keys[2] => layouts.values[2] if layouts.size == 3 %>
+     	  <%= text_field_tag field.to_s, nil, class: 'form-control' if layouts.size == 1 %>
+          <%= text_field_tag field.to_s, nil, class: 'form-control', layouts.keys[1] => layouts.values[1] if layouts.size == 2 %>
+          <%= text_field_tag field.to_s, nil, class: 'form-control', layouts.keys[1] => layouts.values[1], layouts.keys[2] => layouts.values[2] if layouts.size == 3 %>
      	<% when :select_tag %>
-     	  <%= select_tag field.to_s, options_for_select(layouts.values[0]), include_blank: true %>
+     	  <%= select_tag field.to_s, options_for_select(layouts.values[0]), include_blank: true, class: 'form-control' %>
      	<% when :datetime_field_tag %>
-     	  <%= datetime_field_tag field.to_s, nil, placeholder: Time.now.to_s %>
+     	  <%= datetime_field_tag field.to_s, nil, placeholder: Time.now.to_s, class: 'form-control' %>
      	<% when :text_area_tag %>
-     	  <%= text_area_tag field.to_s if layouts.size == 1 %>
-     	  <%= text_area_tag field.to_s, nil, layouts.keys[1] => layouts.values[1] if layouts.size == 2 %>
-     	  <%= text_area_tag field.to_s, nil, layouts.keys[1] => layouts.values[1], layouts.keys[2] => layouts.values[2] if layouts.size == 3 %>
+     	  <%= text_area_tag field.to_s, class: 'form-control' if layouts.size == 1 %>
+     	  <%= text_area_tag field.to_s, nil, layouts.keys[1] => layouts.values[1], class: 'form-control' if layouts.size == 2 %>
+     	  <%= text_area_tag field.to_s, nil, layouts.keys[1] => layouts.values[1], layouts.keys[2] => layouts.values[2], class: 'form-control' if layouts.size == 3 %>
    		<% end %>
      </div>
    </div>

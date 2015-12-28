@@ -1,4 +1,4 @@
-<% if @view_in_config && @erb_code_s %>
+<% if @erb_code_s %>
   <%= render inline: @erb_code_s %>
   
 <% else %>
@@ -9,13 +9,7 @@
       <h2><%=@title_ %></h2>
     </div>
   </div>
-  <%= form_tag eval(@results_url).to_s, :method => :get, html: { class: 'form-horizontal col-sm-' + BUTTONS_CLS['form-span#'] },
-    wrapper: :horizontal_form,
-    wrapper_mappings: {
-    check_boxes: :horizontal_radio_and_checkboxes,
-    radio_buttons: :horizontal_radio_and_checkboxes,
-    file: :horizontal_file_input,
-    boolean: :horizontal_boolean } do  %>
+  <%= form_tag eval(@results_url).to_s, :method => :get, class: 'form-horizontal' do  %>
     
          <%=render  :partial => 'search_params' %>
       
